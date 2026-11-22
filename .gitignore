@@ -1,0 +1,12 @@
+cache/
+output/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+last10_club_matches.csv
+last10_summary.csv
+test_sources.py
+club_last_matches.py

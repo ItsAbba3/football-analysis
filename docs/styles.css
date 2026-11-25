@@ -826,6 +826,207 @@ table.data-table tbody tr:hover {
   gap: 12px;
 }
 
+/* v2.0 Modules: Hit-Rate, Splits, Matchup, Screener, Export */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 11px;
+  min-height: 36px;
+  border-radius: 7px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.btn-export:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.hit-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hit-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.hit-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+.hit-pct {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hit-bar {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.hit-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+  transition: width 550ms var(--ease-out);
+}
+
+.hit-fill.is-secondary {
+  background: var(--secondary);
+}
+
+.hit-sub {
+  font-size: 0.77rem;
+  color: var(--ink-muted);
+}
+
+.splits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.split-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 14px;
+}
+
+.split-card h4 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.split-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding-block: 4px;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.83rem;
+}
+
+.split-row:last-child {
+  border-bottom: 0;
+}
+
+.split-row span:first-child {
+  color: var(--ink-muted);
+}
+
+.split-row strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.matchup-toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.screener-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.h2h-banner {
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: clamp(16px, 2.4vw, 24px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.h2h-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.h2h-side.is-away {
+  text-align: left;
+  align-items: flex-end;
+}
+
+.h2h-side h2 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+  font-weight: 800;
+}
+
+.h2h-vs {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.fixture-chip {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 11px;
+  min-height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--ink);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.fixture-chip:hover,
+.fixture-chip.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* Footer */
 .site-footer {
   border-top: 1px solid var(--border);
@@ -883,9 +1084,9 @@ table.data-table tbody tr:hover {
 }
 
 /* ==========================================================================
-   Responsive Breakpoints (Tablet & Small Laptop: 640px - 920px)
+   Responsive Breakpoints (Tablet & Small Laptop: 640px - 960px)
    ========================================================================== */
-@media (max-width: 920px) {
+@media (max-width: 960px) {
   .desktop-nav {
     display: none;
   }
@@ -896,10 +1097,11 @@ table.data-table tbody tr:hover {
     inset-inline: 0;
     z-index: 60;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
     background: var(--surface);
     border-top: 1px solid var(--border);
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    padding: 5px 4px calc(5px + env(safe-area-inset-bottom, 0px));
   }
 
   .mnav-tab {
@@ -907,14 +1109,15 @@ table.data-table tbody tr:hover {
     background: transparent;
     color: var(--ink-muted);
     font-family: inherit;
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     font-weight: 700;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     min-height: 48px;
+    padding: 4px 2px;
     border-radius: 8px;
   }
 
@@ -931,12 +1134,20 @@ table.data-table tbody tr:hover {
     padding-bottom: 84px;
   }
 
-  .search-form {
+  .search-form,
+  .matchup-toolbar,
+  .screener-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .search-form .btn-primary {
+  .search-form .btn-primary,
+  .matchup-toolbar .btn-primary {
     grid-column: 1 / -1;
+  }
+
+  .hit-grid,
+  .splits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .profile-banner,
@@ -968,12 +1179,24 @@ table.data-table tbody tr:hover {
     padding: 0;
   }
 
-  .search-form {
+  .search-form,
+  .matchup-toolbar,
+  .screener-grid,
+  .hit-grid,
+  .splits-grid,
+  .matchup-metrics {
     grid-template-columns: 1fr;
   }
 
-  .matchup-metrics {
+  .h2h-banner {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .h2h-side,
+  .h2h-side.is-away {
+    align-items: center;
+    text-align: center;
   }
 
   .home-kpi-grid {

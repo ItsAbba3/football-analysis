@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>رادار شوت | تحلیل آماری فوتبال اروپا</title>
-  <meta name="description" content="داشبورد تحلیل شوت، شوت در چارچوب، عملکرد مقابل رده‌های جدول، آمار حریف بعدی و کارت زرد در ۵ لیگ معتبر اروپا" />
+  <meta name="description" content="داشبورد پیشرفته تحلیل شوت، Hit-Rate، آمار به ازای ۹۰ دقیقه، پیش‌بازی، فیلتر هوشمند ۵ لیگ، کرنر، مالکیت، تایمینگ گل و کارت زرد در ۵ لیگ معتبر اروپا" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -34,10 +34,12 @@
       </div>
 
       <nav class="desktop-nav" role="tablist" aria-label="بخش‌های تحلیل">
-        <button type="button" class="nav-tab is-active" role="tab" aria-selected="true" data-tab="player" id="tab-btn-player">تحلیل بازیکن</button>
-        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="team" id="tab-btn-team">تحلیل باشگاه</button>
-        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="league" id="tab-btn-league">برترین‌های لیگ</button>
-        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="home" id="tab-btn-home">بازی‌های خانگی</button>
+        <button type="button" class="nav-tab is-active" role="tab" aria-selected="true" data-tab="player" id="tab-btn-player">بازیکن</button>
+        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="team" id="tab-btn-team">باشگاه</button>
+        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="matchup" id="tab-btn-matchup">پیش‌بازی</button>
+        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="screener" id="tab-btn-screener">فیلتر هوشمند</button>
+        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="league" id="tab-btn-league">برترین‌ها</button>
+        <button type="button" class="nav-tab" role="tab" aria-selected="false" data-tab="home" id="tab-btn-home">آمار تیمی</button>
       </nav>
 
       <div class="header-actions">
@@ -68,9 +70,9 @@
       <div class="control-strip">
         <form class="search-form" id="player-search-form" autocomplete="off">
           <div class="field-group field-primary">
-            <label for="player-input">نام بازیکن (لاتین یا جزئی)</label>
+            <label for="player-input">نام بازیکن (فارسی یا انگلیسی)</label>
             <div class="combo-wrap">
-              <input id="player-input" type="text" placeholder="مثلاً: Lamine Yamal یا Julian Alvarez" />
+              <input id="player-input" type="text" placeholder="مثلاً: Lamine Yamal یا یامال یا Julian Alvarez" />
               <ul class="suggestions" id="player-suggestions" role="listbox" aria-label="پیشنهاد بازیکن" hidden></ul>
             </div>
           </div>
@@ -108,7 +110,7 @@
           <div class="field-group field-primary">
             <label for="team-input">نام باشگاه</label>
             <div class="combo-wrap">
-              <input id="team-input" type="text" placeholder="مثلاً: Barcelona یا Atlético Madrid یا Arsenal" />
+              <input id="team-input" type="text" placeholder="مثلاً: Barcelona یا بارسلونا یا Arsenal" />
               <ul class="suggestions" id="team-suggestions" role="listbox" aria-label="پیشنهاد باشگاه" hidden></ul>
             </div>
           </div>
@@ -141,7 +143,105 @@
       <div id="team-results" class="results-flow" hidden></div>
     </section>
 
-    <!-- ==================== TAB 3: LEAGUE TOP 10 ==================== -->
+    <!-- ==================== TAB 3: MATCHUP / PRE-MATCH ==================== -->
+    <section class="tab-panel" id="panel-matchup" role="tabpanel" aria-labelledby="tab-btn-matchup" hidden>
+      <div class="control-strip">
+        <div class="matchup-toolbar">
+          <div class="field-group">
+            <label for="matchup-league">لیگ</label>
+            <select id="matchup-league">
+              <option value="esp.1">لالیگا اسپانیا</option>
+              <option value="eng.1">لیگ برتر انگلیس</option>
+              <option value="ita.1">سری آ ایتالیا</option>
+              <option value="fra.1">لیگ ۱ فرانسه</option>
+              <option value="ger.1">بوندس‌لیگا آلمان</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="matchup-home">تیم میزبان</label>
+            <select id="matchup-home"></select>
+          </div>
+          <div class="field-group">
+            <label for="matchup-away">تیم مهمان</label>
+            <select id="matchup-away"></select>
+          </div>
+          <button type="button" class="btn-primary" id="btn-run-matchup">مقایسه پیش‌بازی</button>
+        </div>
+        <div class="quick-picks" id="matchup-upcoming-list" aria-label="بازی‌های پیش‌روی هفته"></div>
+      </div>
+
+      <div id="matchup-state" class="state-box" hidden></div>
+      <div id="matchup-results" class="results-flow" hidden></div>
+    </section>
+
+    <!-- ==================== TAB 4: SMART SCREENER ==================== -->
+    <section class="tab-panel" id="panel-screener" role="tabpanel" aria-labelledby="tab-btn-screener" hidden>
+      <div class="control-strip">
+        <div class="screener-grid">
+          <div class="field-group">
+            <label for="scr-league">محدوده لیگ</label>
+            <select id="scr-league">
+              <option value="all" selected>همه ۵ لیگ معتبر اروپا</option>
+              <option value="esp.1">لالیگا اسپانیا</option>
+              <option value="eng.1">لیگ برتر انگلیس</option>
+              <option value="ita.1">سری آ ایتالیا</option>
+              <option value="fra.1">لیگ ۱ فرانسه</option>
+              <option value="ger.1">بوندس‌لیگا آلمان</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="scr-window">بازه بازی‌ها</label>
+            <select id="scr-window">
+              <option value="5" selected>۵ بازی اخیر</option>
+              <option value="10">۱۰ بازی اخیر</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="scr-metric">معیار هدف (Hit-Rate)</label>
+            <select id="scr-metric">
+              <option value="sot1" selected>حداقل ۱ شوت در چارچوب (1+ SoT)</option>
+              <option value="sot2">حداقل ۲ شوت در چارچوب (2+ SoT)</option>
+              <option value="s2">حداقل ۲ شوت کل (2+ Shots)</option>
+              <option value="s3">حداقل ۳ شوت کل (3+ Shots)</option>
+              <option value="fs2">حداقل ۲ خطای گرفته‌شده (2+ Fouls Won)</option>
+              <option value="fc2">حداقل ۲ خطای مرتکب‌شده (2+ Fouls)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="scr-hit">حداقل نرخ تحقق</label>
+            <select id="scr-hit">
+              <option value="50">۵۰٪ به بالا</option>
+              <option value="60">۶۰٪ به بالا</option>
+              <option value="70" selected>۷۰٪ به بالا</option>
+              <option value="80">۸۰٪ به بالا</option>
+              <option value="100">۱۰۰٪ (تمام بازی‌ها)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="scr-opp">شرط حریف بعدی</label>
+            <select id="scr-opp">
+              <option value="any" selected>همه حریف‌ها</option>
+              <option value="bottom">حریف در یک‌سوم پایینی جدول</option>
+              <option value="sota45">حریف با SoT خورده بالای ۴.۵</option>
+              <option value="sota50">حریف با SoT خورده بالای ۵.۰</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="scr-min">حداقل میانگین دقیقه</label>
+            <select id="scr-min">
+              <option value="0">بدون محدودیت</option>
+              <option value="45">۴۵+ دقیقه</option>
+              <option value="60" selected>۶۰+ دقیقه (فیکس)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="screener-state" class="state-box" hidden></div>
+      <div id="screener-results" class="results-flow" hidden></div>
+    </section>
+
+    <!-- ==================== TAB 5: LEAGUE LEADERS ==================== -->
     <section class="tab-panel" id="panel-league" role="tabpanel" aria-labelledby="tab-btn-league" hidden>
       <div class="control-strip">
         <div class="league-toolbar">
@@ -156,16 +256,23 @@
             </select>
           </div>
 
-          <div class="segmented" role="group" aria-label="بازه بازی‌های اخیر">
-            <button type="button" class="seg-btn is-active" data-league-window="10" aria-pressed="true">۱۰ بازی اخیر لیگ</button>
-            <button type="button" class="seg-btn" data-league-window="5" aria-pressed="false">۵ بازی اخیر لیگ</button>
+          <div class="segmented" role="group" aria-label="دسته رتبه‌بندی">
+            <button type="button" class="seg-btn is-active" data-league-mode="sot" aria-pressed="true">شوت در چارچوب</button>
+            <button type="button" class="seg-btn" data-league-mode="per90" aria-pressed="false">آمار در ۹۰ دقیقه</button>
+            <button type="button" class="seg-btn" data-league-mode="gk" aria-pressed="false">دروازه‌بان‌ها</button>
+            <button type="button" class="seg-btn" data-league-mode="fouls" aria-pressed="false">خطا و کارت</button>
           </div>
 
-          <div class="field-group field-narrow">
+          <div class="segmented" id="league-window-group" role="group" aria-label="بازه بازی‌های اخیر">
+            <button type="button" class="seg-btn is-active" data-league-window="10" aria-pressed="true">۱۰ بازی اخیر</button>
+            <button type="button" class="seg-btn" data-league-window="5" aria-pressed="false">۵ بازی اخیر</button>
+          </div>
+
+          <div class="field-group field-narrow" id="league-sort-wrap">
             <label for="league-sort">معیار مرتب‌سازی</label>
             <select id="league-sort">
               <option value="sot_mean" selected>میانگین و میانه SoT</option>
-              <option value="sot_rate">نرخ دقت شوت در چارچوب (SoT%)</option>
+              <option value="sot_rate">نرخ دقت (SoT%)</option>
               <option value="shots_mean">میانگین کل شوت</option>
             </select>
           </div>
@@ -176,12 +283,12 @@
       <div id="league-results" class="results-flow" hidden></div>
     </section>
 
-    <!-- ==================== TAB 4: HOME GOALS & YELLOW CARDS ==================== -->
+    <!-- ==================== TAB 6: TEAM & HOME LAB ==================== -->
     <section class="tab-panel" id="panel-home" role="tabpanel" aria-labelledby="tab-btn-home" hidden>
       <div class="control-strip">
         <div class="league-toolbar">
           <div class="field-group">
-            <label for="home-league-select">انتخاب لیگ برای تحلیل بازی‌های خانگی</label>
+            <label for="home-league-select">انتخاب لیگ</label>
             <select id="home-league-select">
               <option value="esp.1">لالیگا اسپانیا (La Liga)</option>
               <option value="eng.1">لیگ برتر انگلیس (Premier League)</option>
@@ -191,10 +298,17 @@
             </select>
           </div>
 
-          <div class="segmented" role="group" aria-label="مرتب‌سازی جدول خانگی">
-            <button type="button" class="seg-btn is-active" data-home-sort="total_goals" aria-pressed="true">مجموع گل بازی</button>
-            <button type="button" class="seg-btn" data-home-sort="gf" aria-pressed="false">گل زده میزبان</button>
-            <button type="button" class="seg-btn" data-home-sort="total_yc" aria-pressed="false">مجموع کارت زرد</button>
+          <div class="segmented" role="group" aria-label="میزبان یا مهمان">
+            <button type="button" class="seg-btn is-active" data-home-scope="H" aria-pressed="true">بازی‌های خانگی</button>
+            <button type="button" class="seg-btn" data-home-scope="A" aria-pressed="false">خارج از خانه</button>
+            <button type="button" class="seg-btn" data-home-scope="ALL" aria-pressed="false">کل فصل لیگ</button>
+          </div>
+
+          <div class="segmented" role="group" aria-label="دسته آمار تیمی">
+            <button type="button" class="seg-btn is-active" data-home-cat="goals" aria-pressed="true">گل و کارت زرد</button>
+            <button type="button" class="seg-btn" data-home-cat="corners" aria-pressed="false">کرنر و آفساید</button>
+            <button type="button" class="seg-btn" data-home-cat="tactical" aria-pressed="false">مالکیت و دفاع</button>
+            <button type="button" class="seg-btn" data-home-cat="timing" aria-pressed="false">تایمینگ نیمه‌ها</button>
           </div>
         </div>
       </div>
@@ -206,28 +320,36 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>منبع داده: ESPN Soccer API (به‌روزرسانی خودکار روزانه از طریق GitHub Actions + قابلیت دریافت زنده)</p>
+      <p>منبع داده: ESPN Soccer API (به‌روزرسانی خودکار روزانه با GitHub Actions + دریافت زنده در مرورگر)</p>
       <p id="footer-season">فصل ۲۰۲۶/۲۷</p>
     </div>
   </footer>
 
-  <!-- Mobile Bottom Navigation -->
+  <!-- Mobile Bottom Navigation (6 compact accessible tabs) -->
   <nav class="mobile-nav" role="tablist" aria-label="ناوبری موبایل">
     <button type="button" class="mnav-tab is-active" data-tab="player" aria-selected="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c1.6-3.5 4.5-5 8-5s6.4 1.5 8 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c1.6-3.5 4.5-5 8-5s6.4 1.5 8 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>بازیکن</span>
     </button>
     <button type="button" class="mnav-tab" data-tab="team" aria-selected="false">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4 6.5v5.2c0 4.6 3.4 8.2 8 9.3 4.6-1.1 8-4.7 8-9.3V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4 6.5v5.2c0 4.6 3.4 8.2 8 9.3 4.6-1.1 8-4.7 8-9.3V6.5L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
       <span>باشگاه</span>
     </button>
+    <button type="button" class="mnav-tab" data-tab="matchup" aria-selected="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 7h8M8 17h8M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+      <span>پیش‌بازی</span>
+    </button>
+    <button type="button" class="mnav-tab" data-tab="screener" aria-selected="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span>فیلتر</span>
+    </button>
     <button type="button" class="mnav-tab" data-tab="league" aria-selected="false">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <span>برترین‌ها</span>
     </button>
     <button type="button" class="mnav-tab" data-tab="home" aria-selected="false">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      <span>خانگی</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span>تیمی</span>
     </button>
   </nav>
 </body>
